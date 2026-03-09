@@ -14,9 +14,8 @@ app.use(express.urlencoded({extended: true, limit: "16kb"}))
 // User Preferences: Storing themes, language, or cart data.
 // Authentication: Reading JWT or session tokens. 
 
-import { Router } from "express";
-const router = Router();
+import newsRouter from "./routes/newsRouter.js";
 
-router.route("/api/v1")
+app.use("/api/v1/news", newsRouter);
 
 export default app;
