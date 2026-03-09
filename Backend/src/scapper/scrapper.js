@@ -1,47 +1,70 @@
-import Parser from 'rss-parser';
+import Parser from "rss-parser";
+import NewsArticle from "../models/newsArticle.js";
+import connectDB from "../db/db.js";
+import { stringSimilarity } from "string-similarity-js";
+
 const parser = new Parser();
-import NewsArticle from '../models/newsArticle.js';
 
 const TOPICS = [
-  { keyword: "rape india", type: "rape" },
-  { keyword: "murder india", type: "murder" },
-  { keyword: "protest india", type: "protest" },
-  { keyword: "riot violent india", type: "riot" }
+  {keyword: "rape sexual assault india", type: "Rape"}, 
+  {keyword: "protest violent india", type: "Protest"},
+  {keyword: "violent murder india", type: "Murder"},
+  {keyword: "violent riots india", type: "Riot"},
+  {keyword: "Rally rally india", type: "Rally"}
 ]
 
-async function fetchNews(keyword) {
+async function fetchNews (keyword) {
   const feed = await parser.parseURL(`https://news.google.com/rss/search?q=${keyword}`);
   return feed.items
 }
 
-async function fetchAll() {
-  const values = await Promise.all(
-    TOPICS.map((topic) => {
-      const items = fetchNews(topic.keyword)
-      return items;
-    }))
-  values.forEach((items, i) => {
-    // console.log(`${TOPICS[i].type}: ${items.length}`)
-    const newsSource = items[i].title;
-    const str = newsSource.split("-")
-    const source = str[str.length - 1]
+async function fetchAllNews(){
+  for(const topic of TOPICS){
+    const items = await fetchNews(topic.keyword)
+    for (const item of items){
+      const newsSource = item.title;
+      const str = newsSource.split("-")
+      const source = str[str.length - 1]
 
-    const link = items[i].link
-    const pubDate = items[i].pubDate
-    const title = items[i].title
+      const link = item.link
+      const pubDate = item.pubDate
+      const title = item.title
 
-    console.log(`${title}: \n${link}, \n${pubDate} \n${source.trim()}`)
+      console.log(`Soure: ${source.trim()}\nTitle: ${title}\nLink: ${link}\nPublished On: ${pubDate}\nType: ${topic.type}`)
 
-  // const news = NewsArticle.create({
-  //   source: source.trim(),
-  //   url: link,
-  //   pubDate: pubDate,
-  //   title: title,
-  //   incidentType: TOPICS[i].type
-  // }) 
-    
-  })
+      const oldTitle = await NewsArticle.find()
+      let isDuplicate = false;
+
+      for( const old of oldTitle){
+        if(stringSimilarity(title, old.title) > 0.5){
+          isDuplicate = true;
+          break;
+        } 
+      }
+      if(!isDuplicate){
+        const newsArticle = new NewsArticle({
+          title,
+          source: source.trim(),
+          url: link,
+          pubDate,
+          incidentType: topic.type,
+        })
+        
+        try {
+          await newsArticle.save()
+          console.log(`Saved: ${title}`)
+        } catch(err) {
+          console.log(`Error: ${err.message}`)
+        }
+      }
+    }
+  }
   process.exit(1)
 }
 
-fetchAll();
+connectDB()
+.then(fetchAllNews)
+.catch((err) => {
+  console.error("Error while connecting to the database", err)
+  process.exit(1);
+})

@@ -12,6 +12,7 @@ const newsArticleSchema = new mongoose.Schema({
   url: {
     type: String,
     required: true,
+    unique: true,
   },
   pubDate: {
     type: Date,
@@ -41,7 +42,9 @@ const newsArticleSchema = new mongoose.Schema({
       type: Number,
     }
   }
-});
+}, {timestamps: true});
+
+newsArticleSchema.index({ "createdAt": 1 }, { expireAfterSeconds: 2592000 });
 
 const NewsArticle = mongoose.model("NewsArticle", newsArticleSchema);
 
