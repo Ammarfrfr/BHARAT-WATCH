@@ -30,15 +30,15 @@ async function fetchAll() {
     const pubDate = items[i].pubDate
     const title = items[i].title
 
-    console.log(`${title}: \n${link}, \n${pubDate}`)
+    console.log(`${title}: \n${link}, \n${pubDate} \n${source.trim()}`)
 
-  const news = NewsArticle.create({
-    source: source.trim(),
-    url: link,
-    pubDate: pubDate,
-    title: title,
-    incidentType: TOPICS[i].type
-  })
+  // const news = NewsArticle.create({
+  //   source: source.trim(),
+  //   url: link,
+  //   pubDate: pubDate,
+  //   title: title,
+  //   incidentType: TOPICS[i].type
+  // }) 
     
   })
   process.exit(1)
