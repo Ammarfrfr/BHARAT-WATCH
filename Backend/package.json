@@ -10,13 +10,19 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
+  "nodemonConfig": {
+    "ignore": ["src/scapper/*"]
+  },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "jsdom": "^28.1.0",
     "mongoose": "^9.2.4",
     "node-cron": "^4.2.1",
     "nodemon": "^3.1.14",
+    "nominatim-client": "^3.2.1",
     "rss-parser": "^3.13.0",
     "string-similarity-js": "^2.1.4"
   }
