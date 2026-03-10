@@ -1,0 +1,49 @@
+/* Ticker.css */
+.ticker {
+  height: 28px;
+  border-top: 1px solid #0f2a32;
+  background: #070d10;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.ticker-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #ff3d57;
+  padding: 0 12px;
+  border-right: 1px solid #0f2a32;
+  white-space: nowrap;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ticker-track {
+  overflow: hidden;
+  flex: 1;
+}
+
+.ticker-scroll {
+  display: flex;
+  animation: ticker 40s linear infinite;
+  white-space: nowrap;
+}
+
+.ticker-item {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 0 24px;
+  border-right: 1px solid #0f2a32;
+  color: #8ab8c2;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

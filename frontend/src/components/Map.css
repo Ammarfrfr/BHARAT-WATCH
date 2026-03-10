@@ -1,0 +1,84 @@
+/* MapView.css */
+.map-wrapper {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+}
+
+.map-wrapper.dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 400;
+}
+
+.corner-tag {
+  position: absolute;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--text);
+  opacity: 0.3;
+  letter-spacing: 2px;
+  z-index: 500;
+  pointer-events: none;
+}
+
+.corner-tag.tl { top: 12px; left: 12px; }
+.corner-tag.tr { top: 12px; right: 12px; }
+.corner-tag.bl { bottom: 12px; left: 12px; }
+
+.dark-popup .leaflet-popup-content-wrapper {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--text-bright);
+}
+
+.dark-popup .leaflet-popup-tip {
+  background: var(--panel);
+}
+
+.light-popup .leaflet-popup-content-wrapper {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--text-bright);
+}
+
+.light-popup .leaflet-popup-tip {
+  background: var(--panel);
+}
+
+.popup-type {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.popup-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-bright);
+  margin-bottom: 6px;
+}
+
+.popup-meta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--text);
+}

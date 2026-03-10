@@ -11,7 +11,7 @@ const getAllNews = asyncHandler(async (req, res) => {
   res
   .status(200)
   .json(
-    new ApiResponse(200, newsArticles, "News articles retrieved successfully")
+    new ApiResponse(200, "News articles retrieved successfully", newsArticles)
   );  
 })
 

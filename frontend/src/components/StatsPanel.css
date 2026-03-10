@@ -1,0 +1,112 @@
+/* StatsPanel.css */
+.stats-panel {
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  width: 260px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.panel-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.stat-block {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 8px;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.stat-value {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 28px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-sub {
+  font-size: 10px;
+  color: var(--text);
+  margin-top: 4px;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.threat-level {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.threat-seg {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+}
+
+.threat-seg.active {
+  background: #ff3d57;
+  box-shadow: 0 0 4px #ff3d57;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bar-row { display: flex; flex-direction: column; gap: 3px; }
+
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.bar-track {
+  height: 3px;
+  background: var(--border);
+}
+
+.bar-fill {
+  height: 100%;
+  transition: width 1s ease;
+}
+
+.hot-zones {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.hot-zone-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text);
+}
