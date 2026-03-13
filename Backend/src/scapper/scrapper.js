@@ -62,7 +62,6 @@ async function fetchAllNews() {
               console.log("Error saving news article without location:", error)
             }
         } else {
-          await new Promise(resolve => setTimeout(resolve, 4000))
           try {
             const data = await fetch(`https://nominatim.openstreetmap.org/search?q=${foundCity}&format=json`, {
               headers: {

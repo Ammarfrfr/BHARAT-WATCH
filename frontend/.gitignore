@@ -7,6 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+FRONTEND_GUIDE.md
+FRONTEND_EXPLAINED.md
+
 node_modules
 dist
 dist-ssr
