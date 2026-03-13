@@ -5,7 +5,40 @@ import { stringSimilarity } from "string-similarity-js";
 const parser = new Parser();
 
 
-const indianCities = ["Mumbai", "Delhi", "Bengaluru", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata", "Pune", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Indore", "Bhopal", "Patna", "Vadodara", "Ghaziabad", "Ludhiana", "Agra", "Nashik", "Faridabad", "Meerut", "Rajkot", "Varanasi", "Srinagar", "Aurangabad", "Dhanbad", "Amritsar", "Allahabad", "Ranchi", "Howrah", "Coimbatore", "Jabalpur", "Gwalior", "Vijayawada", "Jodhpur", "Madurai", "Raipur", "Kota", "Guwahati", "Chandigarh", "Solapur", "Hubli", "Bareilly", "Moradabad", "Mysuru", "Gurgaon", "Aligarh", "Jalandhar", "Tiruchirappalli", "Bhubaneswar", "Salem", "Warangal", "Guntur", "Bikaner", "Amravati", "Noida", "Dehradun", "Shimla", "Udaipur"];
+const indianCities = [
+"Mumbai","Delhi","Bengaluru","Hyderabad","Ahmedabad","Chennai","Kolkata","Pune",
+"Jaipur","Lucknow","Kanpur","Nagpur","Indore","Bhopal","Visakhapatnam","Patna",
+"Vadodara","Ludhiana","Agra","Nashik","Faridabad","Meerut","Rajkot","Varanasi",
+"Srinagar","Aurangabad","Dhanbad","Amritsar","Prayagraj","Ranchi","Howrah",
+"Coimbatore","Jabalpur","Gwalior","Vijayawada","Madurai","Raipur","Kota",
+"Chandigarh","Guwahati","Solapur","Hubli","Mysuru","Tiruchirappalli","Bareilly",
+"Aligarh","Tiruppur","Moradabad","Jalandhar","Bhubaneswar","Salem","Warangal",
+"Guntur","Bhiwandi","Saharanpur","Gorakhpur","Bikaner","Amravati","Noida",
+"Jamshedpur","Bhilai","Cuttack","Firozabad","Kochi","Nellore","Bhavnagar",
+"Dehradun","Durgapur","Asansol","Rourkela","Nanded","Kolhapur","Ajmer",
+"Akola","Gulbarga","Jamnagar","Ujjain","Loni","Siliguri","Jhansi","Ulhasnagar",
+"Jammu","Sangli","Mangalore","Erode","Belgaum","Ambattur","Tirunelveli",
+"Malegaon","Gaya","Jalgaon","Udaipur","Maheshtala","Tirupati","Davanagere",
+"Kozhikode","Kurnool","Rajpur","Bokaro","South Dumdum","Bellary","Patiala",
+"Gopalpur","Agartala","Bhagalpur","Muzaffarnagar","Bhatpara","Panihati",
+"Latur","Dhule","Rohtak","Korba","Bhilwara","Brahmapur","Muzaffarpur",
+"Ahmednagar","Mathura","Kollam","Avadi","Kadapa","Anantapur","Kamarhati",
+"Bilaspur","Sambalpur","Shahjahanpur","Satara","Bijapur","Rampur","Shimla",
+"Chandrapur","Junagadh","Thrissur","Alwar","Bardhaman","Kulti","Kakinada",
+"Nizamabad","Parbhani","Tumkur","Hisar","Ozhukarai","Bihar Sharif",
+"Panipat","Darbhanga","Bally","Aizawl","Dewas","Ichalkaranji","Tiruvannamalai",
+"Karnal","Bathinda","Jalna","Eluru","Barasat","Purnia","Satna","Mau",
+"Sonipat","Farrukhabad","Sagar","Rourkela","Dindigul","Imphal","Ratlam",
+"Hapur","Arrah","Karimnagar","Anand","Etawah","Ambernath","North Dumdum",
+"Bharatpur","Begusarai","New Delhi","Gandhidham","Baranagar","Tiruvottiyur",
+"Puducherry","Sikar","Thoothukudi","Rewa","Mirzapur","Raichur","Pali",
+"Ramagundam","Silchar","Haridwar","Vijayanagaram","Katihar","Nagercoil",
+"Barmer","Ongole","Nandyal","Morena","Bhiwani","Porbandar","Palakkad",
+"Anantnag","Panchkula","Serampore","Darjeeling","Bhiwadi","Karaikudi",
+"Khammam","Kanchipuram","Bidar","Malda","Cuddalore","Haldia","Yamunanagar",
+"Bahraich","Port Blair","Sambhal","Hazaribagh","Shivamogga","Kishanganj"
+];
+
 
 const TOPICS = [
   { keyword: "rape sexual assault india", type: "Rape" },
