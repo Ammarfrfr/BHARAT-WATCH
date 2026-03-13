@@ -22,12 +22,16 @@
 .logo {
   font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
+  font-weight: bolder;
   color: var(--accent);
   letter-spacing: 4px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.logo span { color: #ff3d57; }
+.logo span { color: #ff3d57; font-size: 18px; line-height: 1; vertical-align: middle; }
 .logo .version { color: var(--text); font-size: 10px; margin-left: 8px; }
 
 .header-meta {

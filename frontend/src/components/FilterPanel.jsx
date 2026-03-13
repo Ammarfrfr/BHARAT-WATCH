@@ -1,4 +1,6 @@
 import './FilterPanel.css';
+import { useState, useEffect } from 'react';
+import { getNews } from '../services/api';
 
 const typeColors = {
   Rape: '#ff3d57',
@@ -17,16 +19,16 @@ const filters = [
   { label: 'Rally', type: 'Rally', color: typeColors.Rally },
 ];
 
-const mockArticles = [
-  { title: "Delhi riots: Violence erupts leaving 3 dead", incidentType: "Riot", location: { city: "Delhi" }, source: "BBC", pubDate: new Date(Date.now() - 3600000) },
-  { title: "Mumbai: Sexual assault case reported in Dharavi", incidentType: "Rape", location: { city: "Mumbai" }, source: "NDTV", pubDate: new Date(Date.now() - 7200000) },
-  { title: "Farmers protest in Delhi intensifies near Red Fort", incidentType: "Protest", location: { city: "Delhi" }, source: "The Hindu", pubDate: new Date(Date.now() - 10800000) },
-  { title: "Bengaluru murder case: Body found near Koramangala", incidentType: "Murder", location: { city: "Bengaluru" }, source: "TOI", pubDate: new Date(Date.now() - 14400000) },
-  { title: "BJP rally in Chennai draws massive crowd", incidentType: "Rally", location: { city: "Chennai" }, source: "IE", pubDate: new Date(Date.now() - 18000000) },
-  { title: "Kolkata: Anti-CAA protest turns violent near Park Street", incidentType: "Protest", location: { city: "Kolkata" }, source: "Telegraph", pubDate: new Date(Date.now() - 21600000) },
-];
-
 const FilterPanel = ({ activeFilter, onFilterChange }) => {
+  const [mockArticles, setMockArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      const newsData = await getNews();
+      setMockArticles(newsData);
+    };
+    fetchNews();
+  }, []);
   const counts = { all: mockArticles.length, Rape: 0, Murder: 0, Riot: 0, Protest: 0, Rally: 0 };
   mockArticles.forEach(a => { if (counts[a.incidentType] !== undefined) counts[a.incidentType]++; });
 

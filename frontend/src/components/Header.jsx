@@ -10,7 +10,7 @@ const Header = ({ isDark, onToggle }) => {
 
   return (
     <header className="header">
-      <div className="logo">INDIA<span>//</span>MONITOR <span className="version">v0.1.0</span></div>
+      <div className="logo"><span className='font-extrabold '>भारत</span>-WATCH <span className="version">v0.1.0</span></div>
       <div className="header-meta">
         <div className="meta-item"><span className="status-dot"></span>LIVE</div>
         <div className="meta-item">INCIDENTS: <strong>142</strong></div>

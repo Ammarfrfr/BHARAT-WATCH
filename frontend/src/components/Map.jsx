@@ -1,7 +1,8 @@
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
+import { getNews } from '../services/api';
 
 const typeColors = {
   Rape: '#ff3d57',
@@ -12,20 +13,10 @@ const typeColors = {
   Other: '#8ab8c2'
 };
 
-const mockArticles = [
-  { title: "Delhi riots: Violence erupts leaving 3 dead", incidentType: "Riot", location: { city: "Delhi", lat: 28.6139, lng: 77.2090 }, source: "BBC", pubDate: new Date() },
-  { title: "Mumbai: Sexual assault case reported in Dharavi", incidentType: "Rape", location: { city: "Mumbai", lat: 19.0760, lng: 72.8777 }, source: "NDTV", pubDate: new Date() },
-  { title: "Farmers protest in Delhi near Red Fort", incidentType: "Protest", location: { city: "Delhi", lat: 28.6562, lng: 77.2410 }, source: "The Hindu", pubDate: new Date() },
-  { title: "Bengaluru murder case: Body found near Koramangala", incidentType: "Murder", location: { city: "Bengaluru", lat: 12.9716, lng: 77.5946 }, source: "TOI", pubDate: new Date() },
-  { title: "BJP rally in Chennai draws massive crowd", incidentType: "Rally", location: { city: "Chennai", lat: 13.0827, lng: 80.2707 }, source: "IE", pubDate: new Date() },
-  { title: "Kolkata: Anti-CAA protest turns violent", incidentType: "Protest", location: { city: "Kolkata", lat: 22.5726, lng: 88.3639 }, source: "Telegraph", pubDate: new Date() },
-  { title: "Hyderabad gang rape: Police arrest 4 suspects", incidentType: "Rape", location: { city: "Hyderabad", lat: 17.3850, lng: 78.4867 }, source: "Hindu", pubDate: new Date() },
-  { title: "Communal riots in Nagpur after Friday prayers", incidentType: "Riot", location: { city: "Nagpur", lat: 21.1458, lng: 79.0882 }, source: "IE", pubDate: new Date() },
-];
-
 const Map = ({ activeFilter }) => {
   const [mapLightMode, setMapLightMode] = useState(false);
-
+  const [articles, setArticles] = useState([]);
+  const [hoveredCity, setHoveredCity] = useState(null);
   // India bounds to lock the map
   const indiaBounds = [
     [7.0, 68.0],  // Southwest corner
@@ -34,12 +25,31 @@ const Map = ({ activeFilter }) => {
     // [38.0, 100.0]  // Northeast corner
   ];
 
+  useEffect(() => {
+    const fetchNews = async () => {
+      const newsData = await getNews();
+      setArticles(newsData);
+    };
+    fetchNews();
+  }, []);
+
   let filtered;
   if (activeFilter === 'all') {
-    filtered = mockArticles.filter(a => a.location?.lat);
+    filtered = articles.filter(a => a.location?.lat);
   } else {
-    filtered = mockArticles.filter(a => a.incidentType === activeFilter && a.location?.lat);
+    filtered = articles.filter(a => a.incidentType === activeFilter && a.location?.lat);
   }
+
+  // Build unique cities with their coordinates for boundary circles
+  const cityMap = {};
+  filtered.forEach(a => {
+    const city = a.location.city;
+    if (city && !cityMap[city]) {
+      cityMap[city] = { lat: a.location.lat, lng: a.location.lng, count: 0 };
+    }
+    if (city) cityMap[city].count++;
+  });
+  const cities = Object.entries(cityMap);
 
   let tileUrl;
   if (mapLightMode) {
@@ -89,27 +99,56 @@ const Map = ({ activeFilter }) => {
           attribution="©OpenStreetMap ©CARTO"
         />
 
-        {filtered.map((article, i) => (
-          <CircleMarker
-            key={i}
-            center={[article.location.lat, article.location.lng]}
-            radius={8}
-            pathOptions={{
-              color: typeColors[article.incidentType] || typeColors.Other,
-              fillColor: typeColors[article.incidentType] || typeColors.Other,
-              fillOpacity: 0.8,
-              weight: 2
-            }}
-          >
-            <Popup className={popupClass}>
-              <div className="popup-type" style={{ color: typeColors[article.incidentType] }}>
-                {article.incidentType} // {article.location.city}
-              </div>
-              <div className="popup-title">{article.title}</div>
-              <div className="popup-meta">{article.source} // {new Date(article.pubDate).toLocaleDateString()}</div>
-            </Popup>
-          </CircleMarker>
-        ))}
+        {/* City boundary highlight circles */}
+        {cities.map(([city, data]) => {
+          const isHovered = hoveredCity === city;
+          return (
+            <CircleMarker
+              key={`border-${city}`}
+              center={[data.lat, data.lng]}
+              radius={isHovered ? 30 : 18}
+              pathOptions={{
+                color: isHovered ? '#00ff88' : 'transparent',
+                fillColor: isHovered ? '#00ff88' : 'transparent',
+                fillOpacity: isHovered ? 0.15 : 0,
+                weight: isHovered ? 2 : 0,
+                dashArray: isHovered ? '6 4' : ''
+              }}
+              interactive={false}
+            />
+          );
+        })}
+
+        {/* Incident markers */}
+        {filtered.map((article, i) => {
+          const isHovered = hoveredCity === article.location.city;
+
+          return (
+            <CircleMarker
+              key={i}
+              center={[article.location.lat, article.location.lng]}
+              radius={isHovered ? 12 : 8}
+              pathOptions={{
+                color: typeColors[article.incidentType] || typeColors.Other,
+                fillColor: typeColors[article.incidentType] || typeColors.Other,
+                fillOpacity: isHovered ? 1 : 0.8,
+                weight: isHovered ? 4 : 2
+              }}
+              eventHandlers={{
+                mouseover: () => setHoveredCity(article.location.city),
+                mouseout: () => setHoveredCity(null)
+              }}
+            >
+              <Popup className={popupClass}>
+                <div className="popup-type" style={{ color: typeColors[article.incidentType] }}>
+                  {article.incidentType} // {article.location.city}
+                </div>
+                <div className="popup-title">{article.title}</div>
+                <div className="popup-meta">{article.source} // {new Date(article.pubDate).toLocaleDateString()}</div>
+              </Popup>
+            </CircleMarker>
+          );
+        })}
       </MapContainer>
 
       <div className="corner-tag tl">LAT 20.5937° N</div>

@@ -1,20 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './StatsPanel.css';
-
-const mockArticles = [
-  { incidentType: "Riot", location: { city: "Delhi" } },
-  { incidentType: "Rape", location: { city: "Mumbai" } },
-  { incidentType: "Protest", location: { city: "Delhi" } },
-  { incidentType: "Murder", location: { city: "Bengaluru" } },
-  { incidentType: "Rally", location: { city: "Chennai" } },
-  { incidentType: "Protest", location: { city: "Kolkata" } },
-  { incidentType: "Rape", location: { city: "Hyderabad" } },
-  { incidentType: "Riot", location: { city: "Nagpur" } },
-  { incidentType: "Murder", location: { city: "Pune" } },
-  { incidentType: "Rally", location: { city: "Lucknow" } },
-  { incidentType: "Other" },
-  { incidentType: "Rape" },
-];
+import { getNews } from '../services/api';
 
 const typeColors = {
   Rape: '#ff3d57',
@@ -25,6 +11,17 @@ const typeColors = {
 };
 
 const StatsPanel = () => {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      const newsData = await getNews();
+      setArticles(newsData);
+    };
+    fetchNews();
+  }, []);
+
+  const mockArticles = articles;
   const total = mockArticles.length;
   const geoCount = mockArticles.filter(a => a.location?.city).length;
 
