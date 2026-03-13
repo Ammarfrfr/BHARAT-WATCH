@@ -1,6 +1,4 @@
 import './FilterPanel.css';
-import { useState, useEffect } from 'react';
-import { getNews } from '../services/api';
 
 const typeColors = {
   Rape: '#ff3d57',
@@ -19,32 +17,18 @@ const filters = [
   { label: 'Rally', type: 'Rally', color: typeColors.Rally },
 ];
 
-const FilterPanel = ({ activeFilter, onFilterChange }) => {
-  const [mockArticles, setMockArticles] = useState([]);
+const FilterPanel = ({ activeFilter, onFilterChange, articles = [] }) => {
+  const counts = { all: articles.length, Rape: 0, Murder: 0, Riot: 0, Protest: 0, Rally: 0 };
+  articles.forEach(a => { if (counts[a.incidentType] !== undefined) counts[a.incidentType]++; });
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      const newsData = await getNews();
-      setMockArticles(newsData);
-    };
-    fetchNews();
-  }, []);
-  const counts = { all: mockArticles.length, Rape: 0, Murder: 0, Riot: 0, Protest: 0, Rally: 0 };
-  mockArticles.forEach(a => { if (counts[a.incidentType] !== undefined) counts[a.incidentType]++; });
+  const filtered = activeFilter === 'all' ? articles : articles.filter(a => a.incidentType === activeFilter);
+  const countDisplay = activeFilter === 'all' ? 'ALL' : activeFilter.toUpperCase();
 
-  let filtered;
-  if (activeFilter === 'all') {
-    filtered = mockArticles;
-  } else {
-    filtered = mockArticles.filter(a => a.incidentType === activeFilter);
-  }
-
-  let countDisplay;
-  if (activeFilter === 'all') {
-    countDisplay = 'ALL';
-  } else {
-    countDisplay = activeFilter.toUpperCase();
-  }
+  const handleFeedItemClick = (url) => {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  };
 
   return (
     <div className="filter-panel">
@@ -80,22 +64,24 @@ const FilterPanel = ({ activeFilter, onFilterChange }) => {
       </div>
 
       <div className="feed">
-        {filtered.map((a, i) => {
-          let borderColor = typeColors[a.incidentType] || '#8ab8c2';
-          let textColor = typeColors[a.incidentType] || '#8ab8c2';
-          
-          return (
-            <div key={i} className="feed-item" style={{ borderLeft: `2px solid ${borderColor}` }}>
-              <div className="feed-type" style={{ color: textColor }}>{a.incidentType}</div>
-              <div className="feed-title">{a.title}</div>
-              <div className="feed-meta">
-                <span>{a.source}</span>
-                <span>{new Date(a.pubDate).toLocaleDateString()}</span>
-                {a.location?.city && <span>{a.location.city}</span>}
-              </div>
+        {filtered.map((a, i) => (
+          <div 
+            key={i} 
+            className="feed-item" 
+            style={{ borderLeft: `2px solid ${typeColors[a.incidentType] || '#8ab8c2'}` }}
+            onClick={() => handleFeedItemClick(a.url)}
+            role="button"
+            tabIndex={0}
+          >
+            <div className="feed-type" style={{ color: typeColors[a.incidentType] || '#8ab8c2' }}>{a.incidentType}</div>
+            <div className="feed-title">{a.title}</div>
+            <div className="feed-meta">
+              <span>{a.source}</span>
+              <span>{new Date(a.pubDate).toLocaleDateString()}</span>
+              {a.location?.city && <span>{a.location.city}</span>}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );

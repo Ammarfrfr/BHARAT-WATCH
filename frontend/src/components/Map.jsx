@@ -1,8 +1,7 @@
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import { getNews } from '../services/api';
 
 const typeColors = {
   Rape: '#ff3d57',
@@ -13,59 +12,27 @@ const typeColors = {
   Other: '#8ab8c2'
 };
 
-const Map = ({ activeFilter }) => {
+const Map = ({ activeFilter, articles = [] }) => {
   const [mapLightMode, setMapLightMode] = useState(false);
-  const [articles, setArticles] = useState([]);
+  const markerRefs = useRef({});
+  
   // India bounds to lock the map
   const indiaBounds = [
     [7.0, 68.0],  // Southwest corner
     [33.5, 95.5]  // Northeast corner
-    // [5.0, 65.0],  // Southwest corner
-    // [38.0, 100.0]  // Northeast corner
   ];
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      const newsData = await getNews();
-      setArticles(newsData);
-    };
-    fetchNews();
-  }, []);
+  const filtered = activeFilter === 'all' 
+    ? articles.filter(a => a.location?.lat)
+    : articles.filter(a => a.incidentType === activeFilter && a.location?.lat);
 
-  let filtered;
-  if (activeFilter === 'all') {
-    filtered = articles.filter(a => a.location?.lat);
-  } else {
-    filtered = articles.filter(a => a.incidentType === activeFilter && a.location?.lat);
-  }
+  const tileUrl = mapLightMode
+    ? "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 
-  let tileUrl;
-  if (mapLightMode) {
-    tileUrl = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-  } else {
-    tileUrl = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-  }
-
-  let popupClass;
-  if (mapLightMode) {
-    popupClass = "light-popup";
-  } else {
-    popupClass = "dark-popup";
-  }
-
-  let mapWrapperClass;
-  if (mapLightMode) {
-    mapWrapperClass = "map-wrapper light";
-  } else {
-    mapWrapperClass = "map-wrapper dark";
-  }
-
-  let buttonText;
-  if (mapLightMode) {
-    buttonText = "MAP DARK";
-  } else {
-    buttonText = "MAP LIGHT";
-  }
+  const popupClass = mapLightMode ? "light-popup" : "dark-popup";
+  const mapWrapperClass = mapLightMode ? "map-wrapper light" : "map-wrapper dark";
+  const buttonText = mapLightMode ? "MAP DARK" : "MAP LIGHT";
 
   return (
     <div className={mapWrapperClass}>
@@ -90,6 +57,7 @@ const Map = ({ activeFilter }) => {
         {filtered.map((article, i) => (
           <CircleMarker
             key={i}
+            ref={(el) => markerRefs.current[i] = el}
             center={[article.location.lat, article.location.lng]}
             radius={8}
             pathOptions={{
@@ -98,8 +66,18 @@ const Map = ({ activeFilter }) => {
               fillOpacity: 0.8,
               weight: 2
             }}
+            onMouseOver={() => {
+              if (markerRefs.current[i]) {
+                markerRefs.current[i].openPopup();
+              }
+            }}
+            onMouseOut={() => {
+              if (markerRefs.current[i]) {
+                markerRefs.current[i].closePopup();
+              }
+            }}
           >
-            <Popup className={popupClass}>
+            <Popup className={popupClass} closeButton={false}>
               <div className="popup-type" style={{ color: typeColors[article.incidentType] }}>
                 {article.incidentType} // {article.location.city}
               </div>

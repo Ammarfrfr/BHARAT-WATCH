@@ -89,10 +89,14 @@
   padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.1s;
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
-.feed-item:hover { background: rgba(0,229,255,0.03); }
+.feed-item:hover { 
+  background: rgba(0,229,255,0.08);
+  border-left-width: 4px !important;
+}
 
 .feed-type {
   font-size: 9px;

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './StatsPanel.css';
-import { getNews } from '../services/api';
 
 const typeColors = {
   Rape: '#ff3d57',
@@ -10,41 +9,18 @@ const typeColors = {
   Rally: '#00ff88',
 };
 
-const StatsPanel = () => {
-  const [articles, setArticles] = useState([]);
-
-  useEffect(() => {
-    const fetchNews = async () => {
-      const newsData = await getNews();
-      setArticles(newsData);
-    };
-    fetchNews();
-  }, []);
-
-  const mockArticles = articles;
-  const total = mockArticles.length;
-  const geoCount = mockArticles.filter(a => a.location?.city).length;
+const StatsPanel = ({ articles = [] }) => {
+  const total = articles.length;
+  const geoCount = articles.filter(a => a.location?.city).length;
 
   const counts = { Rape: 0, Murder: 0, Riot: 0, Protest: 0, Rally: 0 };
-  mockArticles.forEach(a => { if (counts[a.incidentType] !== undefined) counts[a.incidentType]++; });
+  articles.forEach(a => { if (counts[a.incidentType] !== undefined) counts[a.incidentType]++; });
 
   const cityCounts = {};
-  mockArticles.forEach(a => {
+  articles.forEach(a => {
     if (a.location?.city) cityCounts[a.location.city] = (cityCounts[a.location.city] || 0) + 1;
   });
   const hotZones = Object.entries(cityCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
-
-  let hotZonesContent;
-  if (hotZones.length > 0) {
-    hotZonesContent = hotZones.map(([city, n]) => (
-      <div className="hot-zone-row" key={city}>
-        <span>{city}</span>
-        <span style={{ color: '#ff3d57' }}>{n}</span>
-      </div>
-    ));
-  } else {
-    hotZonesContent = <div>-- NO DATA --</div>;
-  }
 
   return (
     <div className="stats-panel">
@@ -102,7 +78,12 @@ const StatsPanel = () => {
       <div className="stat-block">
         <div className="stat-label">Hot Zones</div>
         <div className="hot-zones">
-          {hotZonesContent}
+          {hotZones.length > 0 ? hotZones.map(([city, n]) => (
+            <div className="hot-zone-row" key={city}>
+              <span>{city}</span>
+              <span style={{ color: '#ff3d57' }}>{n}</span>
+            </div>
+          )) : <div>-- NO DATA --</div>}
         </div>
       </div>
     </div>
