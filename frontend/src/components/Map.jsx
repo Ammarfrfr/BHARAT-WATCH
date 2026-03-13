@@ -16,6 +16,10 @@ const Map = ({ activeFilter, articles = [] }) => {
   const [mapLightMode, setMapLightMode] = useState(false);
   const markerRefs = useRef({});
   
+  // Detect mobile
+  const isMobile = window.innerWidth <= 768;
+  const initialZoom = isMobile ? 3.5 : 4;
+  
   // India bounds to lock the map
   const indiaBounds = [
     [7.0, 68.0],  // Southwest corner
@@ -41,11 +45,11 @@ const Map = ({ activeFilter, articles = [] }) => {
       </button>
       <MapContainer
         center={[22.5, 82.0]}
-        zoom={4}
+        zoom={initialZoom}
         zoomControl={false}
         maxBounds={indiaBounds}
         maxBoundsViscosity={1.0}
-        minZoom={4}
+        minZoom={isMobile ? 3.5 : 4}
         maxZoom={12}
         className="map"
       >
