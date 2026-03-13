@@ -97,3 +97,47 @@
   background: #0077aa;
   color: #ffffff;
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .header {
+    height: 40px;
+    padding: 0 12px;
+  }
+
+  .logo {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .version {
+    font-size: 8px;
+    margin-left: 4px;
+  }
+
+  .header-meta {
+    gap: 12px;
+    display: none; /* Hide meta on mobile, show in side panel */
+  }
+
+  .theme-toggle {
+    padding: 4px 8px;
+    font-size: 8px;
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    height: 36px;
+  }
+
+  .logo {
+    font-size: 10px;
+  }
+
+  .theme-toggle {
+    padding: 3px 6px;
+    font-size: 7px;
+  }
+}

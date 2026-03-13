@@ -110,3 +110,44 @@
   font-size: 10px;
   color: var(--text);
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .stats-panel {
+    background: transparent;
+    border-left: none;
+    width: auto;
+    display: none !important;
+  }
+
+  .stat-block {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .bar-chart {
+    padding: 12px;
+  }
+
+  .threat-level {
+    gap: 3px;
+  }
+
+  .threat-seg {
+    height: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-value {
+    font-size: 20px;
+  }
+}

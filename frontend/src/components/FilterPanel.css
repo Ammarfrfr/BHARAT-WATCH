@@ -125,3 +125,51 @@
   font-size: 9px;
   color: var(--text);
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .filter-panel {
+    background: transparent;
+    border-right: none;
+    width: auto;
+    display: none !important;
+  }
+
+  .filter-btn {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .feed-item {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .feed-title {
+    font-size: 13px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .feed-meta {
+    font-size: 10px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-btn {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .feed-item {
+    padding: 10px;
+  }
+
+  .feed-title {
+    font-size: 12px;
+  }
+}
