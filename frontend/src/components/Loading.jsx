@@ -11,6 +11,7 @@ const Loading = () => {
           <div className="loading-bar"></div>
         </div>
         <p className="loading-status">Loading Components...</p>
+        <p className="loading-subtitle">Refresh again if the incident dosen't appears</p>
       </div>
     </div>
   );
