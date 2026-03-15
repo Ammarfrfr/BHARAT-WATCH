@@ -7,6 +7,7 @@ import StatsPanel from './components/StatsPanel.jsx';
 import Ticker from "./components/Ticker.jsx"
 import Loading from './components/Loading.jsx';
 import './App.css';
+import { Analytics } from "@vercel/analytics/next"
 
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
 
@@ -72,6 +73,9 @@ const App = () => {
   }
 
   return (
+    
+      <>
+      <Analytics />
     <div className={appClassName}>
       <Header 
         isDark={isDark} 
@@ -138,6 +142,7 @@ const App = () => {
         📊 STATS
       </button>
     </div>
+    </>
   );
 };
 
