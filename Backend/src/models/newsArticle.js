@@ -49,3 +49,4 @@ newsArticleSchema.index({ "createdAt": 1 }, { expireAfterSeconds: 2592000 });
 const NewsArticle = mongoose.model("NewsArticle", newsArticleSchema);
 
 export default NewsArticle;
+// testing some thing
