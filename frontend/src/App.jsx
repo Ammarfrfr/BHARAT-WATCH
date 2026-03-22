@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from './components/Header.jsx';
+import PrivacyPolicy from './components/PrivacyPolicy.jsx';
 import FilterPanel from './components/FilterPanel.jsx';
 import Map from './components/Map.jsx';
 import StatsPanel from './components/StatsPanel.jsx';
@@ -19,6 +20,7 @@ const App = () => {
   const [lastSync, setLastSync] = useState('--:--:--');
   const [isFeedPanelOpen, setIsFeedPanelOpen] = useState(false);
   const [isStatsPanelOpen, setIsStatsPanelOpen] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   // Fetch articles from backend
   useEffect(() => {
@@ -80,6 +82,7 @@ const App = () => {
       <Header 
         isDark={isDark} 
         onToggle={() => setIsDark(!isDark)} 
+        onPrivacy={() => setShowPrivacy(true)}
         totalIncidents={totalIncidents}
         lastSync={lastSync}
       />
@@ -89,6 +92,9 @@ const App = () => {
         <StatsPanel articles={articles} />
       </div>
       <Ticker />
+
+  {/* Privacy Policy modal */}
+  <PrivacyPolicy isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
 
       {/* Mobile Live Feed Panel */}
       <div className={`mobile-side-panel ${isFeedPanelOpen ? 'open' : ''}`}>

@@ -48,6 +48,13 @@
   font-family: 'Rajdhani', sans-serif;
 }
 
+/* ensure inline items (dot + text) are vertically centered */
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .meta-item strong {
   color: var(--accent);
   font-family: 'Share Tech Mono', monospace;
@@ -61,6 +68,12 @@
   margin-right: 6px;
   box-shadow: 0 0 6px #00ff88;
   animation: pulse 2s infinite;
+}
+
+/* Ensure the status dot aligns exactly with the text baseline */
+.status-dot {
+  vertical-align: middle;
+  transform: translateY(0);
 }
 
 @keyframes pulse {
@@ -86,6 +99,21 @@
   background: #00e5ff;
   color: #030608;
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+}
+
+.privacy-link {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  text-decoration: underline;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.privacy-link:hover {
+  background: rgba(255,255,255,0.02);
 }
 
 .light .theme-toggle {
