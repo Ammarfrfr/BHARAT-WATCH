@@ -10,7 +10,7 @@ import Ticker from "./components/Ticker.jsx"
 import Loading from './components/Loading.jsx';
 import './App.css';
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const App = () => {
   const [activeFilter, setActiveFilter] = useState('all');
